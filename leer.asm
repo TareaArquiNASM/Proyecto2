@@ -16,7 +16,7 @@ extern scanf
 extern fopen
 extern fgets
 global main
-main:
+main:              ;Inicia el programa, pide al usuario que digite el nombre del archivo, para abrirlo
 	push nombre
 	Call printf
 	add esp,4
@@ -32,14 +32,14 @@ main:
 	add esp,8
 	mov ebx,1000000
 	
-leerArchivo:
+leerArchivo: ;lee el archivo y lo guarda en el BufferA
 	push eax
 	push ebx
 	push bufferA
 	call fgets
 	add esp,18
 
-leerIlera:
+leerIlera: ;le pide al usuario que digite la Ilera y la guarda en el bufferB
 	push ilera
 	Call printf
 	add esp,4
@@ -48,14 +48,33 @@ leerIlera:
 	push dirIlera
 	call scanf
 	add esp,8	
+; limpia registros
+xor eax,ebx
+xor edx,edx
+xor ebx,ebx
+xor ecx,ecx
+call contarBufferA ;llama a las funciones
+call contarBufferB
+jmp salir
+
+contarBufferA: ;retorna en el ecx la cantidad de caracteres del BufferA
+	cmp byte[bufferA+ecx],0h
+	je .exit
+	inc ecx
+	jmp contarBufferA
+	.exit:
+		ret
 
 
-escribir:
-	mov eax,4
-	mov ebx,1
-	mov ecx,bufferB
-	mov edx,1000000
-	int 80h
+contarBufferB: ;retorna en el edx la cantidad de caracteres del BufferB
+	cmp byte[bufferB+edx],0h
+	je .exit
+	inc edx
+	jmp contarBufferB
+	
+	.exit:
+		ret
+
 
 salir:
 	mov eax,1

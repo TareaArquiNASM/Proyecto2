@@ -28,7 +28,7 @@ extern fopen
 extern fclose
 global main
 
-main:
+main:		;Inicia el programa, pide al usuario el nombre del archivo a crear     
 xor ecx,ecx
 	xor ebx,ebx
 	xor eax,eax
@@ -41,7 +41,7 @@ xor ecx,ecx
 	call scanf
 	add esp,4
 	
-pedirnum:
+pedirnum:			; Pide al usuario el largo de la Ilera
 	xor ecx,ecx
 	xor ebx,ebx
 	xor eax,eax
@@ -56,7 +56,7 @@ pedirnum:
 	xor esi,esi
 	mov esi,[numeroEntrada]
 	dec esi
-seed:
+seed: 				;Genera la semilla
 	push 0
 	call time
 	add esp,4
@@ -66,7 +66,7 @@ seed:
 	xor ebx,ebx
 
 
-random:
+random:    ; genera el numero random, escoge la letra y lo guarda en el buffer letra
 	mov ecx,27
 	push ecx
 	call rand
@@ -81,7 +81,7 @@ random:
 	inc ebx
 	jmp random
 
-guardar:
+guardar: 			;crea y guarda el archivo
 	mov eax, 8		;sys_creat
 	mov ebx, nombreArchivo
 	mov ecx, 0x0777		;access rights
